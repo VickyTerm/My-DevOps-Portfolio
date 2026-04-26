@@ -1,0 +1,1575 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>D Vignesh — Infrastructure & DevOps Engineer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css" />
+  <style>
+    /* ===== THEME VARIABLES ===== */
+    :root {
+      /* Dark theme (default) */
+      --bg: #0a0a0a;
+      --bg2: #0f0f0f;
+      --bg3: #141414;
+      --cyan: #00e5ff;
+      --cyan-dim: rgba(0, 229, 255, 0.15);
+      --cyan-glow: rgba(0, 229, 255, 0.4);
+      --green: #39ff14;
+      --green-dim: rgba(57, 255, 20, 0.12);
+      --green-glow: rgba(57, 255, 20, 0.35);
+      --text: #c9d1d9;
+      --text-dim: #6e7681;
+      --text-bright: #f0f6fc;
+      --border: rgba(0, 229, 255, 0.12);
+      --border-hover: rgba(0, 229, 255, 0.4);
+      --card-bg: rgba(15, 15, 15, 0.8);
+      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    [data-theme="light"] {
+      --bg: #f5f5f7;
+      --bg2: #ffffff;
+      --bg3: #e8e8ec;
+      --cyan: #0077b6;
+      --cyan-dim: rgba(0, 119, 182, 0.12);
+      --cyan-glow: rgba(0, 119, 182, 0.25);
+      --green: #2d6a4f;
+      --green-dim: rgba(45, 106, 79, 0.1);
+      --green-glow: rgba(45, 106, 79, 0.2);
+      --text: #2d3436;
+      --text-dim: #636e72;
+      --text-bright: #1a1a1a;
+      --border: rgba(0, 119, 182, 0.15);
+      --border-hover: rgba(0, 119, 182, 0.4);
+      --card-bg: rgba(255, 255, 255, 0.9);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      cursor: none;
+      /* Hide default cursor for custom one */
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 14px;
+      line-height: 1.7;
+      overflow-x: hidden;
+      transition: background-color 0.3s ease, color 0.2s ease;
+    }
+
+    /* ===== CUSTOM CURSOR ===== */
+    .cursor-dot {
+      position: fixed;
+      width: 8px;
+      height: 8px;
+      background: var(--cyan);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 10000;
+      transition: transform 0.1s ease, width 0.2s, height 0.2s, background 0.2s;
+      transform: translate(-50%, -50%);
+      box-shadow: 0 0 12px var(--cyan-glow);
+    }
+
+    .cursor-ring {
+      position: fixed;
+      width: 32px;
+      height: 32px;
+      border: 2px solid var(--cyan);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9999;
+      transition: transform 0.15s ease, width 0.2s, height 0.2s, border-color 0.2s;
+      transform: translate(-50%, -50%);
+      opacity: 0.7;
+    }
+
+    /* Cursor hover effects */
+    .cursor-dot.hover-active {
+      transform: translate(-50%, -50%) scale(2);
+      background: var(--green);
+    }
+
+    .cursor-ring.hover-active {
+      width: 48px;
+      height: 48px;
+      border-color: var(--green);
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1.2);
+    }
+
+    /* Click ripple animation */
+    .click-ripple {
+      position: fixed;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: var(--cyan);
+      pointer-events: none;
+      z-index: 10001;
+      transform: translate(-50%, -50%);
+      animation: rippleAnim 0.5s ease-out forwards;
+    }
+
+    @keyframes rippleAnim {
+      0% {
+        width: 0;
+        height: 0;
+        opacity: 0.8;
+      }
+
+      100% {
+        width: 80px;
+        height: 80px;
+        opacity: 0;
+      }
+    }
+
+    /* ===== THEME TOGGLE BUTTON ===== */
+    .theme-toggle {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 1002;
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 50px;
+      padding: 10px 18px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      font-family: var(--font);
+      font-size: 13px;
+      color: var(--text);
+      backdrop-filter: blur(8px);
+      transition: var(--transition);
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    .theme-toggle:hover {
+      border-color: var(--cyan);
+      transform: scale(1.05);
+      box-shadow: 0 0 18px var(--cyan-glow);
+    }
+
+    .theme-toggle-icon {
+      font-size: 16px;
+      transition: transform 0.3s;
+    }
+
+    /* ===== EXISTING STYLES (adapted for theming) ===== */
+    #bg-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      pointer-events: none;
+      opacity: 0.45;
+      transition: opacity 0.3s;
+    }
+
+    [data-theme="light"] #bg-canvas {
+      opacity: 0.25;
+    }
+
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 2.5rem;
+      height: 56px;
+      background: rgba(var(--bg-rgb), 0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    [data-theme="dark"] nav {
+      --bg-rgb: 10, 10, 10;
+    }
+
+    [data-theme="light"] nav {
+      --bg-rgb: 245, 245, 247;
+      background: rgba(245, 245, 247, 0.92);
+    }
+
+    .nav-brand {
+      font-size: 13px;
+      color: var(--cyan);
+      letter-spacing: 0.05em;
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    .nav-brand span {
+      color: var(--green);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 0.2rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--text-dim);
+      text-decoration: none;
+      font-size: 12px;
+      padding: 6px 12px;
+      border-radius: 4px;
+      transition: var(--transition);
+      letter-spacing: 0.03em;
+      border: 1px solid transparent;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+      color: var(--cyan);
+      border-color: var(--border);
+      background: var(--cyan-dim);
+    }
+
+    main {
+      position: relative;
+      z-index: 1;
+    }
+
+    section {
+      padding: 100px 0;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+
+    .section-label {
+      font-size: 11px;
+      color: var(--green);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      margin-bottom: 0.5rem;
+      opacity: 0.8;
+    }
+
+    .section-title {
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      font-weight: 800;
+      color: var(--text-bright);
+      margin-bottom: 3rem;
+      line-height: 1.2;
+    }
+
+    .section-title span {
+      color: var(--cyan);
+    }
+
+    .fade-in {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    .fade-in.visible {
+      opacity: 1;
+      transform: none;
+    }
+
+    #hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding: 100px 0 60px;
+    }
+
+    .hero-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 3rem;
+      width: 100%;
+    }
+
+    .hero-content {
+      flex: 1 1 0;
+      min-width: 0;
+    }
+
+    .hero-prompt {
+      font-size: 13px;
+      color: var(--green);
+      margin-bottom: 1.2rem;
+      opacity: 0.85;
+      letter-spacing: 0.02em;
+    }
+
+    .hero-name {
+      font-size: clamp(2.8rem, 6vw, 5rem);
+      font-weight: 800;
+      color: var(--text-bright);
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.4rem;
+    }
+
+    .hero-name span {
+      color: var(--cyan);
+      text-shadow: 0 0 40px var(--cyan-glow);
+    }
+
+    .hero-title {
+      font-size: clamp(1rem, 2.5vw, 1.4rem);
+      color: var(--cyan);
+      font-weight: 500;
+      margin-bottom: 1.8rem;
+      min-height: 2em;
+      letter-spacing: 0.02em;
+    }
+
+    .hero-title .cursor {
+      display: inline-block;
+      width: 2px;
+      height: 1.1em;
+      background: var(--cyan);
+      margin-left: 3px;
+      vertical-align: text-bottom;
+      animation: blink 1s step-end infinite;
+    }
+
+    @keyframes blink {
+
+      0%,
+      100% {
+        opacity: 1
+      }
+
+      50% {
+        opacity: 0
+      }
+    }
+
+    .hero-about {
+      max-width: 560px;
+      font-size: 14px;
+      color: var(--text);
+      line-height: 1.8;
+      margin-bottom: 2.4rem;
+      padding: 1.2rem 1.4rem;
+      border-left: 2px solid var(--cyan);
+      background: var(--cyan-dim);
+      border-radius: 0 6px 6px 0;
+    }
+
+    .hero-btns {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.8rem;
+    }
+
+    /* ── Hero Photo Container ── */
+    .hero-photo-wrap {
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .hero-photo {
+      width: 260px;
+      height: 260px;
+      border-radius: 12px;
+      border: 2px solid var(--cyan);
+      background: var(--bg3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 0 40px var(--cyan-glow), inset 0 0 30px rgba(0, 229, 255, 0.04);
+      transition: var(--transition);
+    }
+
+    .hero-photo::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, var(--cyan-dim) 0%, transparent 60%, var(--green-dim) 100%);
+      pointer-events: none;
+    }
+
+    .hero-photo::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--cyan), var(--green), transparent);
+      animation: scanline 3s ease-in-out infinite;
+    }
+
+    .hero-photo:hover {
+      box-shadow: 0 0 60px var(--cyan-glow), inset 0 0 40px rgba(0, 229, 255, 0.08);
+      transform: translateY(-4px);
+    }
+
+    .hero-photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .hero-photo-placeholder {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--text-dim);
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      opacity: 0.6;
+      text-align: center;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    .hero-photo-placeholder svg {
+      opacity: 0.4;
+    }
+
+    .hero-photo-label {
+      font-size: 11px;
+      color: var(--cyan);
+      opacity: 0.7;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    @media(max-width: 860px) {
+      .hero-inner {
+        flex-direction: column-reverse;
+        align-items: flex-start;
+      }
+
+      .hero-photo {
+        width: 180px;
+        height: 180px;
+      }
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 10px 22px;
+      border-radius: 5px;
+      font-family: var(--font);
+      font-size: 13px;
+      font-weight: 600;
+      text-decoration: none;
+      cursor: pointer;
+      transition: var(--transition);
+      letter-spacing: 0.04em;
+      border: none;
+    }
+
+    .btn-primary {
+      background: var(--cyan);
+      color: #000;
+    }
+
+    .btn-primary:hover {
+      background: #fff;
+      box-shadow: 0 0 24px var(--cyan-glow);
+      transform: translateY(-2px);
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--cyan);
+      border: 1px solid var(--cyan);
+    }
+
+    .btn-outline:hover {
+      background: var(--cyan-dim);
+      box-shadow: 0 0 18px var(--cyan-glow);
+      transform: translateY(-2px);
+    }
+
+    .btn-green {
+      background: transparent;
+      color: var(--green);
+      border: 1px solid var(--green);
+    }
+
+    .btn-green:hover {
+      background: var(--green-dim);
+      box-shadow: 0 0 18px var(--green-glow);
+      transform: translateY(-2px);
+    }
+
+    /* Flagship Card */
+    #flagship {
+      padding: 80px 0;
+    }
+
+    .flagship-card {
+      background: linear-gradient(135deg, var(--bg2) 0%, var(--bg3) 50%, var(--bg2) 100%);
+      border: 1px solid var(--cyan);
+      border-radius: 12px;
+      padding: 3rem;
+      position: relative;
+      overflow: hidden;
+      transition: var(--transition);
+      box-shadow: 0 0 60px rgba(0, 229, 255, 0.05);
+    }
+
+    .flagship-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--cyan), var(--green), transparent);
+      animation: scanline 3s ease-in-out infinite;
+    }
+
+    @keyframes scanline {
+
+      0%,
+      100% {
+        opacity: 0.4;
+        transform: scaleX(0.8);
+      }
+
+      50% {
+        opacity: 1;
+        transform: scaleX(1);
+      }
+    }
+
+    .flagship-card:hover {
+      border-color: var(--cyan);
+      box-shadow: 0 0 80px rgba(0, 229, 255, 0.12);
+      transform: translateY(-3px);
+    }
+
+    /* Project cards and other elements remain with theme variables */
+    .project-card,
+    .story-card,
+    .skill-chip,
+    .contact-link {
+      background: var(--bg2);
+      border-color: var(--border);
+      color: var(--text);
+    }
+
+    .skill-chip:hover,
+    .project-card:hover,
+    .story-card:hover {
+      border-color: var(--border-hover);
+    }
+
+    .timeline::before {
+      background: linear-gradient(to bottom, var(--cyan), var(--green), transparent);
+    }
+
+    /* Mobile responsive */
+    .nav-toggle {
+      display: none;
+      background: none;
+      border: 1px solid var(--border);
+      color: var(--cyan);
+      padding: 6px 10px;
+      cursor: pointer;
+      border-radius: 4px;
+      font-size: 16px;
+    }
+
+    @media(max-width: 860px) {
+      .nav-toggle {
+        display: block;
+      }
+
+      .nav-links {
+        display: none;
+        position: fixed;
+        top: 56px;
+        right: 0;
+        background: rgba(var(--bg-rgb), 0.98);
+        backdrop-filter: blur(16px);
+        border: 1px solid var(--border);
+        border-top: none;
+        border-radius: 0 0 0 10px;
+        flex-direction: column;
+        padding: 0.5rem;
+        gap: 2px;
+      }
+
+      .nav-links.open {
+        display: flex;
+      }
+    }
+
+    @media(max-width: 500px) {
+      section {
+        padding: 70px 0;
+      }
+
+      .flagship-card {
+        padding: 1.5rem;
+      }
+
+      .story-card {
+        padding: 1.5rem;
+      }
+    }
+
+    /* Additional responsive */
+    .badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .badge {
+      font-size: 11px;
+      padding: 3px 10px;
+      border-radius: 4px;
+      border: 1px solid var(--border);
+      color: var(--text-dim);
+      background: rgba(255, 255, 255, 0.03);
+      transition: var(--transition);
+    }
+
+    .badge:hover {
+      border-color: var(--cyan);
+      color: var(--cyan);
+      background: var(--cyan-dim);
+    }
+
+    .skills-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+    }
+
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .stories-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+
+    @media(max-width: 700px) {
+      .stories-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .timeline {
+      position: relative;
+      padding-left: 2.5rem;
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 1px;
+      opacity: 0.4;
+    }
+
+    .contact-wrapper {
+      max-width: 680px;
+    }
+
+    .contact-links {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      margin-bottom: 2.5rem;
+    }
+  </style>
+</head>
+
+<body data-theme="dark">
+
+  <canvas id="bg-canvas"></canvas>
+
+  <!-- Custom Cursor Elements -->
+  <div class="cursor-dot"></div>
+  <div class="cursor-ring"></div>
+
+  <!-- Theme Toggle Button -->
+  <button class="theme-toggle" id="themeToggle">
+    <span class="theme-toggle-icon">🌙</span>
+    <span>Dark/Light</span>
+  </button>
+
+  <nav>
+    <a class="nav-brand" href="#hero"><span>vignesh</span>@devops</a>
+    <button class="nav-toggle" id="nav-toggle">≡</button>
+    <ul class="nav-links" id="nav-links">
+      <li><a href="#hero">~/home</a></li>
+      <li><a href="#flagship">~/flagship</a></li>
+      <li><a href="#skills">~/stack</a></li>
+      <li><a href="#projects">~/projects</a></li>
+      <li><a href="#stories">~/stories</a></li>
+      <li><a href="#journey">~/journey</a></li>
+      <li><a href="#contact">~/contact</a></li>
+    </ul>
+  </nav>
+
+  <main>
+    <section id="hero">
+      <div class="container">
+        <div class="hero-inner fade-in">
+
+          <!-- Left: text content -->
+          <div class="hero-content">
+            <div class="hero-prompt">vignesh@devops:~$ whoami</div>
+            <h1 class="hero-name">D <span>Vignesh</span></h1>
+            <div class="hero-title"><span id="typewriter"></span><span class="cursor"></span></div>
+            <p class="hero-about">BCA graduate who traced computing back to Ada Lovelace before touching a terminal.
+              Hardware tinkerer turned DevOps engineer — comfortable at every layer from NVMe disks to Kubernetes
+              clusters.</p>
+            <div class="hero-btns">
+              <a href="#projects" class="btn btn-primary">View My Work ↓</a>
+              <a href="https://github.com/VickyTerm" target="_blank" rel="noopener" class="btn btn-outline"><i
+                  class="devicon-github-original"></i> GitHub</a>
+              <a href="#contact" class="btn btn-green">Contact Me →</a>
+            </div>
+          </div>
+
+          <!-- Right: photo container -->
+          <div class="hero-photo-wrap">
+            <div class="hero-photo" id="hero-photo-box">
+              <img src="Shadow-theme.png" alt="D Vignesh profile">
+            </div>
+            <span class="hero-photo-label">// profile.jpg</span>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <section id="flagship">
+      <div class="container">
+        <div class="section-label fade-in">// featured project</div>
+        <div class="flagship-card fade-in">
+          <div class="flagship-star">⭐ Flagship Project</div>
+          <h2 class="flagship-title">Trend — React E-Commerce Frontend</h2>
+          <p class="flagship-subtitle">"Production-grade. End-to-end. Fully deployed."</p>
+          <div class="badges"><span class="badge">React</span><span class="badge">Vite</span><span
+              class="badge">Docker</span><span class="badge">Nginx</span><span class="badge">Terraform</span><span
+              class="badge">AWS EKS</span><span class="badge">Jenkins</span><span class="badge">Prometheus</span><span
+              class="badge">Grafana</span><span class="badge">Helm</span><span class="badge">Kubernetes</span></div>
+          <div class="flagship-grid">
+            <div class="flagship-col">
+              <h4>What Was Built</h4>
+              <ul>
+                <li>High-performance React + Vite frontend, production-optimized</li>
+                <li>Product discovery, wishlist, and secure checkout via Razorpay</li>
+                <li>Code-splitting and asset hashing for maximum load performance</li>
+                <li>Containerized with Docker, served via Nginx in EKS cluster</li>
+                <li>Deployed using Terraform IaC + Helm + full CI/CD via Jenkins</li>
+                <li>Full observability: Prometheus metrics + Grafana dashboards</li>
+              </ul>
+            </div>
+            <div class="flagship-col">
+              <div class="problem-box">
+                <div class="label">🔥 Problem Encountered</div>
+                <p>Jenkins couldn't find Docker during pipeline execution — Jenkins user lacked Docker socket
+                  permissions, causing all containerized build steps to fail.</p>
+              </div>
+              <div class="fix-box">
+                <div class="label">🔧 Resolution Applied</div>
+                <p>Added Jenkins user to the Docker group, corrected Docker socket permissions, restarted Jenkins
+                  service, and updated Jenkinsfile with the full Docker binary path. Pipeline succeeded on the next run.
+                </p>
+              </div><a href="https://github.com/VickyTerm/Trend-is-a-high-performance-responsive-E-commerce-frontend-built-using-React-and-Vite.git" target="_blank" rel="noopener" class="btn btn-outline"
+                style="font-size:12px;padding:8px 18px;width:fit-content;"><i class="devicon-github-original"></i> View
+                Repository →</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="skills">
+      <div class="container">
+        <div class="section-label fade-in">// skills &amp; stack</div>
+        <h2 class="section-title fade-in">Technical <span>Arsenal</span></h2>
+        <div class="fade-in">
+          <div class="skills-group">
+            <div class="skills-group-title">☁️ Cloud &amp; AWS</div>
+            <div class="skills-grid"><span class="skill-chip"><i
+                  class="devicon-amazonwebservices-plain-wordmark colored"></i>EC2</span><span class="skill-chip"><i
+                  class="devicon-amazonwebservices-plain-wordmark colored"></i>VPC</span><span class="skill-chip"><i
+                  class="devicon-amazonwebservices-plain-wordmark colored"></i>IAM</span><span class="skill-chip"><i
+                  class="devicon-amazonwebservices-plain-wordmark colored"></i>ALB</span><span class="skill-chip"><i
+                  class="devicon-amazonwebservices-plain-wordmark colored"></i>S3</span><span class="skill-chip"><i
+                  class="devicon-amazonwebservices-plain-wordmark colored"></i>ECR</span><span class="skill-chip"><i
+                  class="devicon-amazonwebservices-plain-wordmark colored"></i>EKS</span><span class="skill-chip"><i
+                  class="devicon-amazonwebservices-plain-wordmark colored"></i>CodeBuild</span><span
+                class="skill-chip"><i class="devicon-amazonwebservices-plain-wordmark colored"></i>CodePipeline</span>
+            </div>
+          </div>
+          <div class="skills-group">
+            <div class="skills-group-title">🐳 Containers &amp; Orchestration</div>
+            <div class="skills-grid"><span class="skill-chip"><i
+                  class="devicon-docker-plain colored"></i>Docker</span><span class="skill-chip"><i
+                  class="devicon-docker-plain colored"></i>Docker Compose</span><span class="skill-chip"><i
+                  class="devicon-kubernetes-plain colored"></i>Kubernetes</span></div>
+          </div>
+          <div class="skills-group">
+            <div class="skills-group-title">⚙️ CI/CD</div>
+            <div class="skills-grid"><span class="skill-chip"><i
+                  class="devicon-jenkins-plain colored"></i>Jenkins</span><span class="skill-chip"><i
+                  class="devicon-amazonwebservices-plain-wordmark colored"></i>AWS CodePipeline</span><span
+                class="skill-chip"><i class="devicon-amazonwebservices-plain-wordmark colored"></i>CodeBuild</span>
+            </div>
+          </div>
+          <div class="skills-group">
+            <div class="skills-group-title">🏗️ Infrastructure as Code</div>
+            <div class="skills-grid"><span class="skill-chip"><i
+                  class="devicon-terraform-plain colored"></i>Terraform</span></div>
+          </div>
+          <div class="skills-group">
+            <div class="skills-group-title">📊 Monitoring &amp; Observability</div>
+            <div class="skills-grid"><span class="skill-chip"><i
+                  class="devicon-prometheus-original colored"></i>Prometheus</span><span class="skill-chip"><i
+                  class="devicon-grafana-original colored"></i>Grafana</span><span class="skill-chip">🟢 Uptime
+                Kuma</span></div>
+          </div>
+          <div class="skills-group">
+            <div class="skills-group-title">🖥️ OS &amp; Linux</div>
+            <div class="skills-grid"><span class="skill-chip"><i
+                  class="devicon-ubuntu-plain colored"></i>Ubuntu</span><span class="skill-chip"><i
+                  class="devicon-fedora-plain colored"></i>Fedora</span><span class="skill-chip"><i
+                  class="devicon-linux-plain"></i>Kali Linux</span><span class="skill-chip"><i
+                  class="devicon-debian-plain colored"></i>Debian</span><span class="skill-chip"><i
+                  class="devicon-centos-plain colored"></i>CentOS</span></div>
+          </div>
+          <div class="skills-group">
+            <div class="skills-group-title">💻 Frontend</div>
+            <div class="skills-grid"><span class="skill-chip"><i
+                  class="devicon-react-original colored"></i>React</span><span class="skill-chip"><i
+                  class="devicon-vitejs-plain colored"></i>Vite</span><span class="skill-chip"><i
+                  class="devicon-nginx-original colored"></i>Nginx</span></div>
+          </div>
+          <div class="skills-group">
+            <div class="skills-group-title">🔧 Scripting &amp; Version Control</div>
+            <div class="skills-grid"><span class="skill-chip"><i class="devicon-bash-plain"></i>Bash</span><span
+                class="skill-chip"><i class="devicon-python-plain colored"></i>Python</span><span class="skill-chip"><i
+                  class="devicon-git-plain colored"></i>Git</span><span class="skill-chip"><i
+                  class="devicon-github-original"></i>GitHub</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="projects">
+      <div class="container">
+        <div class="section-label fade-in">// other work</div>
+        <h2 class="section-title fade-in">More <span>Projects</span></h2>
+        <div class="projects-grid">
+          <div class="project-card fade-in">
+            <div class="project-card-title">Three-Tier Web App + CI/CD Pipeline</div>
+            <div class="badges"><span class="badge">AWS EC2</span><span class="badge">VPC</span><span
+                class="badge">IAM</span><span class="badge">ALB</span><span class="badge">S3</span><span
+                class="badge">Jenkins</span><span class="badge">DockerHub</span><span class="badge">Webhooks</span>
+            </div>
+            <p class="project-built">End-to-end three-tier web application with full CI/CD automation on AWS.</p>
+            <div class="mini-box mini-problem"><strong>🔥 Problem</strong> Jenkins installation failed (outdated Java +
+              expired key issues).</div>
+            <div class="mini-box mini-fix"><strong>🔧 Fix</strong> Switched to DockerHub credentials in Jenkins + AWS
+              public IP webhooks.</div><a href="https://github.com/VickyTerm/Devops-Website.git" target="_blank" class="btn btn-outline"
+              style="font-size:12px;padding:7px 16px;margin-top:auto;width:fit-content;">GitHub Repo →</a>
+          </div>
+          <div class="project-card fade-in">
+            <div class="project-card-title">Task Management App with Notifications</div>
+            <div class="badges"><span class="badge">Node.js</span><span class="badge">Docker</span><span
+                class="badge">AWS ECR</span><span class="badge">EKS</span></div>
+            <p class="project-built">Dockerized Node.js app deployed on EKS via AWS-native CI/CD pipeline.</p>
+            <div class="mini-box mini-problem"><strong>🔥 Problem</strong> eksctl create cluster threw
+              InvalidClientTokenID error.</div>
+            <div class="mini-box mini-fix"><strong>🔧 Fix</strong> Updated IAM role policy with GitHub connection
+              permission.</div><a href="https://github.com/VickyTerm" target="_blank" class="btn btn-outline"
+              style="font-size:12px;padding:7px 16px;margin-top:auto;width:fit-content;">GitHub Repo →</a>
+          </div>
+          <div class="project-card fade-in">
+            <div class="project-card-title">E-Commerce App with Full Monitoring Stack</div>
+            <div class="badges"><span class="badge">Docker</span><span class="badge">Prometheus</span><span
+                class="badge">Grafana</span><span class="badge">Uptime Kuma</span></div>
+            <p class="project-built">Complete observability stack with Prometheus metrics and Grafana dashboards.</p>
+            <div class="mini-box mini-problem"><strong>🔥 Problem</strong> Managing clean environment separation between
+              dev and prod.</div>
+            <div class="mini-box mini-fix"><strong>🔧 Fix</strong> Separate DockerHub repos per environment with
+              branch-based triggers.</div><a href="" target="_blank" class="btn btn-outline"
+              style="font-size:12px;padding:7px 16px;margin-top:auto;width:fit-content;">GitHub Repo →</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="stories">
+      <div class="container">
+        <div class="section-label fade-in">// battle log</div>
+        <h2 class="section-title fade-in">War <span>Stories</span></h2>
+        <div class="stories-grid">
+          <div class="story-card fade-in">
+            <div class="story-icon">💾</div>
+            <div class="story-title">"When I thought I killed the laptop"</div>
+            <p class="story-body">Before DevOps, before cloud — there was a laptop, an external SSD, and a decision that
+              felt irreversible. <em>Most people would have pulled the plug. I didn't.</em> It worked. Staying calm when
+              the system is on fire is half the job.</p>
+          </div>
+          <div class="story-card fade-in">
+            <div class="story-icon">🔥</div>
+            <div class="story-title">"Build #24"</div>
+            <p class="story-body">My first Jenkins pipeline failed 24 times. Each failure was a different error. I fixed
+              every single one. <em>I had 24 reasons to never fear a red build again.</em></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="journey">
+      <div class="container">
+        <div class="section-label fade-in">// origin story</div>
+        <h2 class="section-title fade-in">My <span>Journey</span></h2>
+        <div class="timeline fade-in">
+          <div class="timeline-era">
+            <div class="era-dot"></div>
+            <div class="era-label">Era 01</div>
+            <div class="era-title">Hardware Era</div>
+            <ul class="era-items">
+              <li>Deep-dived PC architecture: CPU cores, threads, GPU pipelines, NVMe vs HDD mechanics</li>
+              <li>Built a PC from scratch — component selection, assembly, POST debugging</li>
+              <li>Studied Ada Lovelace → Assembly → COBOL → C → Python</li>
+            </ul>
+          </div>
+          <div class="timeline-era">
+            <div class="era-dot" style="border-color:var(--green);"></div>
+            <div class="era-label">Era 02</div>
+            <div class="era-title">OS &amp; Linux Era</div>
+            <ul class="era-items">
+              <li>Distro-hopped through Fedora, Debian, CentOS, Kali Linux</li>
+              <li>Cloned a complete Ubuntu installation across laptops via NVMe transfer</li>
+              <li>Learned GRUB configs, secure boot, VMware, hypervisors</li>
+            </ul>
+          </div>
+          <div class="timeline-era">
+            <div class="era-dot" style="border-color:var(--cyan);"></div>
+            <div class="era-label">Era 03</div>
+            <div class="era-title">DevOps Era</div>
+            <ul class="era-items">
+              <li>Completed full DevOps engineering course at GUVI</li>
+              <li>Built 4 end-to-end production projects from scratch</li>
+              <li>Deployed on AWS infrastructure: EC2, EKS, ECR, ALB, VPC</li>
+              <li>Full observability stack: Prometheus + Grafana + Uptime Kuma</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact">
+      <div class="container">
+        <div class="contact-wrapper">
+          <div class="contact-prompt fade-in">vignesh@devops:~$ ping me</div>
+          <h2 class="contact-title fade-in">Let's Build <span>Something.</span></h2>
+          <div class="contact-links fade-in"><a href="mailto:vignesh.d@devops.engineer" class="contact-link">
+              <div class="contact-link-icon">✉</div>
+              <div class="contact-link-meta"><span
+                  class="contact-link-label">Email</span><span>vignesh.d@devops.engineer</span></div>
+            </a><a href="#" class="contact-link">
+              <div class="contact-link-icon"><i class="devicon-linkedin-plain colored"></i></div>
+              <div class="contact-link-meta"><span
+                  class="contact-link-label">LinkedIn</span><span>linkedin.com/in/dvignesh-devops</span></div>
+            </a><a href="https://github.com/VickyTerm" class="contact-link">
+              <div class="contact-link-icon"><i class="devicon-github-original"></i></div>
+              <div class="contact-link-meta"><span
+                  class="contact-link-label">GitHub</span><span>github.com/VickyTerm</span></div>
+            </a></div>
+          <div class="contact-footer fade-in">Built with intention. Deployed with
+            conviction.<br /><span>vignesh@devops:~$ exit 0</span></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    // ===== THEME TOGGLE =====
+    const themeToggle = document.getElementById('themeToggle');
+    const themeIcon = themeToggle.querySelector('.theme-toggle-icon');
+    let currentTheme = localStorage.getItem('theme') || 'dark';
+    document.body.setAttribute('data-theme', currentTheme);
+    updateThemeIcon(currentTheme);
+
+    function updateThemeIcon(theme) {
+      themeIcon.textContent = theme === 'dark' ? '🌙' : '☀️';
+    }
+
+    themeToggle.addEventListener('click', () => {
+      const newTheme = document.body.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      document.body.setAttribute('data-theme', newTheme);
+      localStorage.setItem('theme', newTheme);
+      updateThemeIcon(newTheme);
+    });
+
+    // ===== ANIMATED CURSOR WITH CLICK EFFECTS =====
+    const cursorDot = document.querySelector('.cursor-dot');
+    const cursorRing = document.querySelector('.cursor-ring');
+
+    document.addEventListener('mousemove', (e) => {
+      cursorDot.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`;
+      cursorRing.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`;
+    });
+
+    // Hover effect on all clickable elements
+    const clickables = document.querySelectorAll('a, button, .btn, .skill-chip, .project-card, .story-card, .contact-link, .nav-links a, .theme-toggle');
+    clickables.forEach(el => {
+      el.addEventListener('mouseenter', () => {
+        cursorDot.classList.add('hover-active');
+        cursorRing.classList.add('hover-active');
+      });
+      el.addEventListener('mouseleave', () => {
+        cursorDot.classList.remove('hover-active');
+        cursorRing.classList.remove('hover-active');
+      });
+
+      // Click ripple effect
+      el.addEventListener('click', (e) => {
+        const ripple = document.createElement('div');
+        ripple.className = 'click-ripple';
+        ripple.style.left = e.clientX + 'px';
+        ripple.style.top = e.clientY + 'px';
+        document.body.appendChild(ripple);
+        setTimeout(() => ripple.remove(), 500);
+      });
+    });
+
+    // ===== LIVE WALLPAPER — PC COMPONENT SHAPES =====
+    (function () {
+      const canvas = document.getElementById('bg-canvas');
+      const ctx = canvas.getContext('2d');
+      let W, H;
+
+      function resize() {
+        W = canvas.width = window.innerWidth;
+        H = canvas.height = window.innerHeight;
+      }
+      resize();
+      window.addEventListener('resize', () => { resize(); initDots(); });
+
+      // ── Portfolio colour palette: cyan + green only ──────────────
+      const CYAN = '#00e5ff';
+      const GREEN = '#39ff14';
+      const COLORS = [CYAN, GREEN];
+
+      const N = 500;   // total dots
+      const N_SHAPE = 250;   // how many converge into the shape; the rest float on the opposite side
+      let mouse = { x: W / 2, y: H / 2 };
+      let stillStart = null, stillTimer = 0;
+      let forming = false, formed = false, exploding = false;
+      let formProgress = 0, activeComponent = 0, lastTime = 0;
+      let shapeCX = W / 2, shapeCY = H / 2;
+      let shapeSide = 'left';   // 'left' | 'right' — side where the shape forms
+
+      // ── shape helpers ────────────────────────────────────────────
+      function makeRect(cx, cy, w, h, density) {
+        const pts = [];
+        const nx = Math.ceil(w / density), ny = Math.ceil(h / density);
+        for (let i = 0; i <= nx; i++) {
+          const t = i / nx;
+          pts.push({ x: cx - w / 2 + t * w, y: cy - h / 2 });
+          pts.push({ x: cx - w / 2 + t * w, y: cy + h / 2 });
+        }
+        for (let i = 1; i < ny; i++) {
+          const t = i / ny;
+          pts.push({ x: cx - w / 2, y: cy - h / 2 + t * h });
+          pts.push({ x: cx + w / 2, y: cy - h / 2 + t * h });
+        }
+        return pts;
+      }
+      function makeLine(x1, y1, x2, y2, n) {
+        const pts = [];
+        for (let i = 0; i <= n; i++) {
+          const t = i / n;
+          pts.push({ x: x1 + (x2 - x1) * t, y: y1 + (y2 - y1) * t });
+        }
+        return pts;
+      }
+      function makeCircle(cx, cy, r, n) {
+        const pts = [];
+        for (let i = 0; i < n; i++) {
+          const a = (i / n) * Math.PI * 2;
+          pts.push({ x: cx + Math.cos(a) * r, y: cy + Math.sin(a) * r });
+        }
+        return pts;
+      }
+
+      // ── component shape builders ─────────────────────────────────
+      function buildShape(idx, cx, cy) {
+        const S = Math.min(W, H);
+        let pts = [];
+
+        switch (idx) {
+          case 0: { // CPU
+            const outer = S * 0.26, inner = S * 0.14, coreR = S * 0.04;
+            pts.push(...makeRect(cx, cy, outer, outer, S * 0.010));
+            pts.push(...makeRect(cx, cy, inner, inner, S * 0.010));
+            pts.push(...makeCircle(cx + inner * 0.28, cy + inner * 0.05, coreR, 28));
+            const corners = [
+              [cx - outer / 2, cy - outer / 2], [cx + outer / 2, cy - outer / 2],
+              [cx - outer / 2, cy + outer / 2], [cx + outer / 2, cy + outer / 2],
+            ];
+            const rcx = cx + inner * 0.28, rcy = cy + inner * 0.05;
+            corners.forEach(([ex, ey]) => pts.push(...makeLine(rcx, rcy, ex, ey, 18)));
+            [[cx, cy - outer / 2], [cx, cy + outer / 2], [cx - outer / 2, cy], [cx + outer / 2, cy]]
+              .forEach(([ex, ey]) => pts.push(...makeLine(rcx, rcy, ex, ey, 12)));
+            for (let i = -5; i <= 5; i++) {
+              pts.push({ x: cx + i * (outer / 11), y: cy - outer / 2 - S * 0.018 });
+              pts.push({ x: cx + i * (outer / 11), y: cy + outer / 2 + S * 0.018 });
+              pts.push({ x: cx - outer / 2 - S * 0.018, y: cy + i * (outer / 11) });
+              pts.push({ x: cx + outer / 2 + S * 0.018, y: cy + i * (outer / 11) });
+            }
+            break;
+          }
+          case 1: { // GPU
+            const bw = S * 0.68, bh = S * 0.22;
+            pts.push(...makeRect(cx, cy, bw, bh, S * 0.018));
+            for (let i = -10; i <= 10; i++)
+              pts.push(...makeLine(cx + i * (bw / 22), cy - bh / 2, cx + i * (bw / 22), cy + bh * 0.1, 8));
+            pts.push(...makeCircle(cx - bw * 0.22, cy + bh * 0.08, bh * 0.3, 36));
+            pts.push(...makeCircle(cx + bw * 0.18, cy + bh * 0.08, bh * 0.3, 36));
+            pts.push(...makeRect(cx - bw * 0.15, cy + bh / 2 + S * 0.025, bw * 0.35, S * 0.04, S * 0.012));
+            for (let i = 0; i < 4; i++)
+              pts.push(...makeRect(cx + bw / 2 - S * 0.04, cy - bh * 0.25 + i * S * 0.055, S * 0.05, S * 0.038, S * 0.012));
+            break;
+          }
+          case 2: { // RAM
+            const sw = S * 0.52, sh = S * 0.1;
+            pts.push(...makeRect(cx, cy, sw, sh, S * 0.013));
+            pts.push(...makeRect(cx + sw * 0.08, cy + sh / 2 + S * 0.016, S * 0.04, S * 0.028, S * 0.01));
+            for (let i = -5; i <= 5; i++)
+              pts.push(...makeRect(cx + i * (S * 0.042), cy - sh * 0.12, S * 0.03, sh * 0.55, S * 0.008));
+            for (let i = -12; i <= 12; i++)
+              pts.push({ x: cx + i * (sw / 26), y: cy + sh / 2 + S * 0.008 });
+            break;
+          }
+          case 3: { // NVMe SSD
+            const sw = S * 0.55, sh = S * 0.1;
+            pts.push(...makeRect(cx, cy, sw, sh, S * 0.013));
+            pts.push(...makeRect(cx - sw * 0.2, cy, S * 0.07, sh * 0.7, S * 0.01));
+            pts.push(...makeRect(cx + sw * 0.05, cy - sh * 0.12, S * 0.12, sh * 0.65, S * 0.013));
+            pts.push(...makeRect(cx + sw * 0.22, cy - sh * 0.12, S * 0.12, sh * 0.65, S * 0.013));
+            pts.push(...makeRect(cx + sw / 2 - S * 0.025, cy, S * 0.018, sh * 1.1, S * 0.008));
+            for (let i = -8; i <= 8; i++)
+              pts.push({ x: cx - sw * 0.38 + i * S * 0.014, y: cy });
+            break;
+          }
+          case 4: { // HDD
+            const hw = S * 0.42, hh = S * 0.28;
+            pts.push(...makeRect(cx, cy, hw, hh, S * 0.016));
+            pts.push(...makeCircle(cx - S * 0.04, cy, hh * 0.38, 40));
+            pts.push(...makeCircle(cx - S * 0.04, cy, hh * 0.07, 12));
+            pts.push(...makeLine(cx - S * 0.04, cy, cx + S * 0.14, cy - S * 0.06, 8));
+            pts.push(...makeRect(cx + S * 0.15, cy - S * 0.07, S * 0.04, S * 0.02, S * 0.008));
+            pts.push(...makeRect(cx + hw / 2 - S * 0.04, cy + hh * 0.28, S * 0.07, S * 0.05, S * 0.01));
+            pts.push(...makeRect(cx + hw / 2 - S * 0.15, cy + hh * 0.28, S * 0.07, S * 0.05, S * 0.01));
+            break;
+          }
+          case 5: { // Motherboard
+            const mw = S * 0.62, mh = S * 0.55;
+            pts.push(...makeRect(cx, cy, mw, mh, S * 0.022));
+            pts.push(...makeRect(cx - mw * 0.18, cy - mh * 0.2, S * 0.17, S * 0.17, S * 0.012));
+            for (let r = -3; r <= 3; r++) for (let c = -3; c <= 3; c++)
+              pts.push({ x: cx - mw * 0.18 + c * S * 0.022, y: cy - mh * 0.2 + r * S * 0.022 });
+            for (let i = 0; i < 4; i++)
+              pts.push(...makeRect(cx + mw * 0.1, cy - mh * 0.28 + i * S * 0.075, S * 0.028, S * 0.06, S * 0.01));
+            for (let i = 0; i < 3; i++)
+              pts.push(...makeRect(cx - S * 0.04, cy + mh * 0.06 + i * S * 0.075, mw * 0.6, S * 0.022, S * 0.015));
+            pts.push(...makeRect(cx + mw * 0.34, cy - mh * 0.34, S * 0.08, S * 0.14, S * 0.012));
+            for (let i = 0; i < 4; i++) for (let j = 0; j < 3; j++)
+              pts.push({ x: cx + mw * 0.31 + j * S * 0.022, y: cy - mh * 0.38 + i * S * 0.034 });
+            pts.push(...makeRect(cx - mw * 0.36, cy - mh * 0.3, S * 0.09, S * 0.14, S * 0.012));
+            for (let i = -2; i <= 2; i++)
+              pts.push(...makeLine(cx - mw * 0.36 + i * S * 0.016, cy - mh * 0.37,
+                cx - mw * 0.36 + i * S * 0.016, cy - mh * 0.23, 5));
+            break;
+          }
+        }
+        return pts;
+      }
+
+      // ── component meta — only cyan / green colours ───────────────
+      const COMP_INFO = [
+        { name: 'CPU', sub: 'Intel Core i9-14900K', stat: 'Usage: 87%  |  Temp: 74°C', color: CYAN },
+        { name: 'GPU', sub: 'NVIDIA RTX 4090 24GB', stat: 'Load: 62%  |  VRAM: 18.4 GB', color: GREEN },
+        { name: 'RAM', sub: 'DDR5-6000  32 GB (2×16)', stat: 'Used: 14.2 GB / 32 GB', color: CYAN },
+        { name: 'NVMe SSD', sub: 'Samsung 990 Pro 2 TB', stat: 'Read: 7400 MB/s  |  1.1 TB used', color: GREEN },
+        { name: 'HDD', sub: 'Seagate Barracuda 4 TB', stat: 'Used: 2.8 TB / 4 TB', color: CYAN },
+        { name: 'Motherboard', sub: 'ASUS ROG MAXIMUS Z790', stat: 'Slots: All active  |  BIOS 3802', color: GREEN },
+      ];
+
+      // ── dots — variable sizes matching original pattern ──────────
+      class Dot {
+        constructor() {
+          this.x = Math.random() * W;
+          this.y = Math.random() * H;
+          this.vx = (Math.random() - 0.5) * 1.5;
+          this.vy = (Math.random() - 0.5) * 1.5;
+          this.size = Math.random() * 2.2 + 1.2;   // 1.2 – 3.4 px radius
+          this.color = COLORS[Math.floor(Math.random() * COLORS.length)];
+          this.explodeVx = 0;
+          this.explodeVy = 0;
+        }
+      }
+
+      let dots = [], targetPositions = [];
+      function initDots() { dots = Array.from({ length: N }, () => new Dot()); }
+      initDots();
+
+      function computeTargets() {
+        // Determine which side the cursor is on
+        shapeSide = mouse.x < W / 2 ? 'left' : 'right';
+        shapeCX = mouse.x;
+        shapeCY = mouse.y;
+
+        let raw = buildShape(activeComponent, shapeCX, shapeCY);
+        // Shuffle raw shape points
+        for (let i = raw.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [raw[i], raw[j]] = [raw[j], raw[i]];
+        }
+
+        // Build targetPositions:
+        //   indices 0 .. N_SHAPE-1  → shape targets (from raw, looped if needed)
+        //   indices N_SHAPE .. N-1  → null  (ambient / free-floating)
+        targetPositions = [];
+        for (let i = 0; i < N; i++) {
+          if (i < N_SHAPE) {
+            const src = raw[i % raw.length];
+            targetPositions.push({
+              x: src.x + (Math.random() - 0.5) * 2,
+              y: src.y + (Math.random() - 0.5) * 2
+            });
+          } else {
+            targetPositions.push(null);
+          }
+        }
+
+        // Give ambient dots (N_SHAPE … N-1) an initial kick toward the OPPOSITE half
+        // so they spread across the other side visibly from the start
+        const oppCX = shapeSide === 'left' ? W * 0.70 : W * 0.30;
+        for (let i = N_SHAPE; i < dots.length; i++) {
+          const sign = (oppCX - dots[i].x) > 0 ? 1 : -1;
+          dots[i].vx = sign * (2.5 + Math.random() * 2.5);
+          dots[i].vy = (Math.random() - 0.5) * 3;
+        }
+      }
+
+      // ── input ────────────────────────────────────────────────────
+      function triggerExplode() {
+        if (formed || forming) {
+          exploding = true; formed = false; forming = false; formProgress = 0;
+          dots.forEach(d => {
+            // Random 360° direction per dot → dots fan out across all 4 corners/sides
+            const angle = Math.random() * Math.PI * 2;
+            const speed = 8 + Math.random() * 12;
+            d.explodeVx = Math.cos(angle) * speed;
+            d.explodeVy = Math.sin(angle) * speed;
+          });
+        }
+        stillStart = null; stillTimer = 0;
+      }
+
+      window.addEventListener('mousemove', e => {
+        const moved = Math.hypot(e.clientX - mouse.x, e.clientY - mouse.y);
+        mouse.x = e.clientX; mouse.y = e.clientY;
+        if (moved > 2) triggerExplode();
+      });
+      window.addEventListener('touchmove', e => {
+        e.preventDefault();
+        mouse.x = e.touches[0].clientX; mouse.y = e.touches[0].clientY;
+        triggerExplode();
+      }, { passive: false });
+
+      // ── render loop ──────────────────────────────────────────────
+      function loop(ts) {
+        const dt = Math.min((ts - lastTime) / 16, 3); lastTime = ts;
+        ctx.clearRect(0, 0, W, H);
+
+        const now = performance.now();
+        const comp = COMP_INFO[activeComponent];
+
+        // stillness timer
+        if (!formed && !forming && !exploding) {
+          if (!stillStart) stillStart = now;
+          stillTimer = (now - stillStart) / 1000;
+          if (stillTimer >= 2) {
+            forming = true; formProgress = 0;
+            activeComponent = (activeComponent + 1) % COMP_INFO.length;
+            computeTargets();
+          }
+        }
+
+        // ── formProgress: update ONCE per frame (not per dot) ──────
+        if (forming) {
+          formProgress = Math.min(formProgress + 0.006 * dt, 1);
+          if (formProgress >= 1) { forming = false; formed = true; }
+        }
+
+        // X-centre of the ambient half (opposite to shape side)
+        const ambBiasX = shapeSide === 'left' ? W * 0.70 : W * 0.30;
+
+        // update dots
+        dots.forEach((d, i) => {
+          if (exploding) {
+            // ── blast phase: all dots scatter with random directions ──
+            d.x += d.explodeVx * dt; d.y += d.explodeVy * dt;
+            d.explodeVx *= 0.91; d.explodeVy *= 0.91;
+            if (d.x < 0 || d.x > W) d.explodeVx *= -1;
+            if (d.y < 0 || d.y > H) d.explodeVy *= -1;
+            d.x = Math.max(0, Math.min(W, d.x));
+            d.y = Math.max(0, Math.min(H, d.y));
+
+          } else if (forming || formed) {
+            if (i < N_SHAPE) {
+              // ── shape dot: converge toward assigned target ─────────
+              const tp = targetPositions[i];
+              if (tp) {
+                d.x += (tp.x - d.x) * 0.055 * dt;
+                d.y += (tp.y - d.y) * 0.055 * dt;
+              }
+            } else {
+              // ── ambient dot: float freely on the OPPOSITE half ─────
+              // Gentle pull toward the opposite X-centre keeps them spread there
+              d.vx += (ambBiasX - d.x) * 0.0006 + (Math.random() - 0.5) * 0.06;
+              d.vy += (Math.random() - 0.5) * 0.06;
+              d.vx *= 0.97; d.vy *= 0.97;
+              const spd = Math.hypot(d.vx, d.vy);
+              if (spd > 3) { d.vx = d.vx / spd * 3; d.vy = d.vy / spd * 3; }
+              d.x += d.vx * dt; d.y += d.vy * dt;
+              if (d.x < 0) { d.x = 0; d.vx *= -1; } if (d.x > W) { d.x = W; d.vx *= -1; }
+              if (d.y < 0) { d.y = 0; d.vy *= -1; } if (d.y > H) { d.y = H; d.vy *= -1; }
+            }
+
+          } else {
+            // ── idle: all 500 dots float, attracted toward cursor ──────
+            const dx = mouse.x - d.x, dy = mouse.y - d.y, dist = Math.hypot(dx, dy);
+            if (dist < 140 && dist > 0) {
+              const f = (140 - dist) / 140;
+              d.vx += (dx / dist) * f * 0.75;
+              d.vy += (dy / dist) * f * 0.75;
+            }
+            d.vx += (Math.random() - 0.5) * 0.04;
+            d.vy += (Math.random() - 0.5) * 0.04;
+            d.vx *= 0.97; d.vy *= 0.97;
+            const spd = Math.hypot(d.vx, d.vy);
+            if (spd > 3.5) { d.vx = d.vx / spd * 3.5; d.vy = d.vy / spd * 3.5; }
+            d.x += d.vx * dt; d.y += d.vy * dt;
+            if (d.x < 0) { d.x = 0; d.vx *= -1; } if (d.x > W) { d.x = W; d.vx *= -1; }
+            if (d.y < 0) { d.y = 0; d.vy *= -1; } if (d.y > H) { d.y = H; d.vy *= -1; }
+          }
+        });
+
+        if (exploding && dots.every(d => Math.abs(d.explodeVx) < 0.22 && Math.abs(d.explodeVy) < 0.22)) {
+          exploding = false; stillStart = performance.now();
+        }
+
+        // draw connections
+        const maxConn = formed ? 52 : 72;
+        for (let i = 0; i < dots.length; i++) {
+          for (let j = i + 1; j < dots.length; j++) {
+            const dx = dots[i].x - dots[j].x, dy = dots[i].y - dots[j].y;
+            const dist = Math.hypot(dx, dy);
+            if (dist < maxConn) {
+              const alpha = (1 - dist / maxConn) * (formed ? 0.6 : 0.25);
+              const g = ctx.createLinearGradient(dots[i].x, dots[i].y, dots[j].x, dots[j].y);
+              g.addColorStop(0, dots[i].color);
+              g.addColorStop(1, dots[j].color);
+              ctx.beginPath();
+              ctx.strokeStyle = g;
+              ctx.globalAlpha = alpha;
+              ctx.lineWidth = formed ? 0.8 : 0.45;
+              ctx.moveTo(dots[i].x, dots[i].y);
+              ctx.lineTo(dots[j].x, dots[j].y);
+              ctx.stroke();
+            }
+          }
+        }
+
+        // draw dots — use each dot's individual size
+        dots.forEach(d => {
+          const drawColor = formed ? comp.color : d.color;
+          ctx.beginPath();
+          ctx.arc(d.x, d.y, d.size, 0, Math.PI * 2);
+          ctx.fillStyle = drawColor;
+          ctx.globalAlpha = 0.9;
+          ctx.shadowColor = drawColor;
+          ctx.shadowBlur = formed ? 6 : 3;
+          ctx.fill();
+        });
+        ctx.shadowBlur = 0; ctx.globalAlpha = 1;
+
+        // component label — follows the shape wherever it is on screen
+        if ((forming && formProgress > 0.45) || formed) {
+          const a = formed ? 1 : (formProgress - 0.45) / 0.55;
+
+          // ── font sizes (responsive) ──
+          const fnName = Math.max(16, Math.floor(W * 0.024)); // e.g. ~22px on 1080p
+          const fnSub = Math.max(12, Math.floor(W * 0.014)); // e.g. ~15px
+          const fnStat = Math.max(12, Math.floor(W * 0.015)); // e.g. ~16px
+
+          // ── vertical layout: compute total block height then centre it ──
+          const lineH = fnName * 1.5;   // gap between each line
+          const blockH = fnName + lineH + fnSub + lineH * 0.7 + fnStat;
+
+          // Place label above the shape; flip below if in top 35% of screen
+          const labelGap = 100;
+          const lx = shapeCX;
+          const ly = shapeCY < H * 0.35
+            ? shapeCY + labelGap              // shape in upper area → label below
+            : shapeCY - labelGap - blockH;   // everywhere else    → label above
+          const lyC = Math.max(20, Math.min(H - blockH - 20, ly));
+
+          // ── line Y positions ──
+          const y1 = lyC + fnName;                       // component name
+          const y2 = y1 + lineH;                         // sub-title
+          const y3 = y2 + fnSub + lineH * 0.7;           // stat line
+
+          ctx.save();
+          ctx.textAlign = 'center';
+
+          // faint separator drawn below the whole label block
+          const lineHalf = Math.min(200, W * 0.18);
+          ctx.beginPath();
+          ctx.moveTo(lx - lineHalf, y3 + fnStat + 8);
+          ctx.lineTo(lx + lineHalf, y3 + fnStat + 8);
+          ctx.strokeStyle = comp.color;
+          ctx.lineWidth = 0.6;
+          ctx.globalAlpha = a * 0.30;
+          ctx.stroke();
+
+          // ── [ COMPONENT NAME ] — bright, glowing ──
+          ctx.globalAlpha = a;
+          ctx.font = `bold ${fnName}px JetBrains Mono, monospace`;
+          ctx.fillStyle = comp.color;
+          ctx.shadowColor = comp.color;
+          ctx.shadowBlur = 16;
+          ctx.fillText('[ ' + comp.name + ' ]', lx, y1);
+
+          // ── sub-title — dim/grey ──
+          ctx.shadowBlur = 0;
+          ctx.font = `${fnSub}px JetBrains Mono, monospace`;
+          ctx.fillStyle = '#aaaaaa';
+          ctx.globalAlpha = a * 0.85;
+          ctx.fillText(comp.sub, lx, y2);
+
+          // ── stat line — coloured, slightly smaller ──
+          ctx.font = `bold ${fnStat}px JetBrains Mono, monospace`;
+          ctx.fillStyle = comp.color;
+          ctx.globalAlpha = a * 0.90;
+          ctx.fillText(comp.stat, lx, y3);
+
+          ctx.restore();
+        }
+
+        // stillness progress ring around the custom cursor dot
+        if (!forming && !formed && stillTimer > 0.2) {
+          const pct = Math.min(stillTimer / 2, 1);
+          ctx.save();
+          ctx.beginPath();
+          ctx.arc(mouse.x, mouse.y, 10, -Math.PI / 2, -Math.PI / 2 + pct * Math.PI * 2);
+          ctx.strokeStyle = CYAN;
+          ctx.globalAlpha = 0.55;
+          ctx.lineWidth = 1.5;
+          ctx.stroke();
+          ctx.restore();
+        }
+
+        requestAnimationFrame(loop);
+      }
+
+      requestAnimationFrame(ts => { lastTime = ts; loop(ts); });
+    })()
+
+
+
+
+    // ===== TYPEWRITER =====
+    const phrases = ['Infrastructure & DevOps Engineer', 'Cloud Architect. Kubernetes Wrangler.', 'CI/CD Pipeline Debugger (×24).', 'From NVMe to EKS Clusters.'];
+    let pi = 0, ci = 0, deleting = false;
+    const tw = document.getElementById('typewriter');
+    function type() {
+      const phrase = phrases[pi];
+      if (!deleting) {
+        tw.textContent = phrase.slice(0, ci + 1);
+        ci++;
+        if (ci === phrase.length) { deleting = true; setTimeout(type, 2000); return; }
+      } else {
+        tw.textContent = phrase.slice(0, ci - 1);
+        ci--;
+        if (ci === 0) { deleting = false; pi = (pi + 1) % phrases.length; }
+      }
+      setTimeout(type, deleting ? 40 : 70);
+    }
+    type();
+
+    // ===== INTERSECTION OBSERVER =====
+    const fades = document.querySelectorAll('.fade-in');
+    const obs = new IntersectionObserver((entries) => { entries.forEach((e, i) => { if (e.isIntersecting) setTimeout(() => e.target.classList.add('visible'), i * 60); }); }, { threshold: 0.12 });
+    fades.forEach(el => obs.observe(el));
+
+    // ===== ACTIVE NAV =====
+    const sections = document.querySelectorAll('section[id]');
+    const navLinks = document.querySelectorAll('.nav-links a');
+    const navObs = new IntersectionObserver((entries) => { entries.forEach(entry => { if (entry.isIntersecting) { navLinks.forEach(a => { a.classList.toggle('active', a.getAttribute('href') === '#' + entry.target.id); }); } }); }, { rootMargin: '-40% 0px -55% 0px' });
+    sections.forEach(s => navObs.observe(s));
+
+    // ===== NAV TOGGLE =====
+    document.getElementById('nav-toggle').addEventListener('click', () => { document.getElementById('nav-links').classList.toggle('open'); });
+    document.querySelectorAll('.nav-links a').forEach(a => { a.addEventListener('click', () => { document.getElementById('nav-links').classList.remove('open'); }); });
+  </script>
+</body>
+
+</html>
