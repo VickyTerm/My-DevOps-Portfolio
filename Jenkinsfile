@@ -3,8 +3,7 @@ pipeline {
     stages {
         stage('Clone Repo') {
             steps {
-                git 'https://github.com/VickyTerm/My-DevOps-Portfolio.git'
-            }
+                    git branch: 'main', url: 'https://github.com/VickyTerm/My-DevOps-Portfolio.git'             }
         }
         stage('Deploy to S3') {
             steps {
