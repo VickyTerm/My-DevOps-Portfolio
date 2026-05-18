@@ -59,6 +59,12 @@
       /* Hide default cursor for custom one */
     }
 
+    /* ===== TOUCH / MOBILE: restore default cursor & hide custom cursor ===== */
+    @media (hover: none) and (pointer: coarse) {
+      * { cursor: auto !important; }
+      .cursor-dot, .cursor-ring { display: none !important; }
+    }
+
     html {
       scroll-behavior: smooth;
     }
@@ -650,6 +656,32 @@
       .story-card {
         padding: 1.5rem;
       }
+
+      /* Flagship button row: stack on mobile */
+      .flagship-btn-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.6rem;
+      }
+
+      /* Hero name sizing */
+      .hero-name {
+        font-size: clamp(2rem, 10vw, 2.8rem);
+      }
+
+      /* Prevent horizontal overflow */
+      .badges {
+        gap: 0.4rem;
+      }
+
+      .badge {
+        font-size: 10px;
+        padding: 2px 7px;
+      }
+
+      .projects-grid {
+        grid-template-columns: 1fr;
+      }
     }
 
     /* Additional responsive */
@@ -823,16 +855,18 @@
                 <p>Added Jenkins user to the Docker group, corrected Docker socket permissions, restarted Jenkins
                   service, and updated Jenkinsfile with the full Docker binary path. Pipeline succeeded on the next run.
                 </p>
-              </div><a
+              </div><div class="flagship-btn-row" style="display:flex;flex-wrap:wrap;gap:0.6rem;margin-top:0.5rem;align-items:center;">
+                <a
                 href="https://github.com/VickyTerm/Trend-is-a-high-performance-responsive-E-commerce-frontend-built-using-React-and-Vite.git"
                 target="_blank" rel="noopener" class="btn btn-outline"
                 style="font-size:12px;padding:8px 18px;width:fit-content;"><i class="devicon-github-original"></i> View
                 Repository →</a>
                 <a
                 href="https://docs.google.com/document/d/100PwxbPZRDjIVCcDcNmhOKaerINkHenVSWbkywEyaOU/edit?tab=t.0"
-                target="_blank" rel="noopener" class="btn btn-outline"
-                style="font-size:12px;padding:8px 18px;width:fit-content;"><i class="devicon-github-original"></i> View
-                Documention →</a>
+                target="_blank" rel="noopener" class="btn btn-green"
+                style="font-size:12px;padding:8px 18px;width:fit-content;">📄 View
+                Documentation →</a>
+              </div>
             </div>
           </div>
         </div>
@@ -1071,33 +1105,38 @@
     const cursorDot = document.querySelector('.cursor-dot');
     const cursorRing = document.querySelector('.cursor-ring');
 
-    document.addEventListener('mousemove', (e) => {
-      cursorDot.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`;
-      cursorRing.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`;
-    });
+    // Only activate custom cursor on non-touch devices
+    const isTouch = window.matchMedia('(hover: none) and (pointer: coarse)').matches;
 
-    // Hover effect on all clickable elements
-    const clickables = document.querySelectorAll('a, button, .btn, .skill-chip, .project-card, .story-card, .contact-link, .nav-links a, .theme-toggle');
-    clickables.forEach(el => {
-      el.addEventListener('mouseenter', () => {
-        cursorDot.classList.add('hover-active');
-        cursorRing.classList.add('hover-active');
-      });
-      el.addEventListener('mouseleave', () => {
-        cursorDot.classList.remove('hover-active');
-        cursorRing.classList.remove('hover-active');
+    if (!isTouch) {
+      document.addEventListener('mousemove', (e) => {
+        cursorDot.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`;
+        cursorRing.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`;
       });
 
-      // Click ripple effect
-      el.addEventListener('click', (e) => {
-        const ripple = document.createElement('div');
-        ripple.className = 'click-ripple';
-        ripple.style.left = e.clientX + 'px';
-        ripple.style.top = e.clientY + 'px';
-        document.body.appendChild(ripple);
-        setTimeout(() => ripple.remove(), 500);
+      // Hover effect on all clickable elements
+      const clickables = document.querySelectorAll('a, button, .btn, .skill-chip, .project-card, .story-card, .contact-link, .nav-links a, .theme-toggle');
+      clickables.forEach(el => {
+        el.addEventListener('mouseenter', () => {
+          cursorDot.classList.add('hover-active');
+          cursorRing.classList.add('hover-active');
+        });
+        el.addEventListener('mouseleave', () => {
+          cursorDot.classList.remove('hover-active');
+          cursorRing.classList.remove('hover-active');
+        });
+
+        // Click ripple effect
+        el.addEventListener('click', (e) => {
+          const ripple = document.createElement('div');
+          ripple.className = 'click-ripple';
+          ripple.style.left = e.clientX + 'px';
+          ripple.style.top = e.clientY + 'px';
+          document.body.appendChild(ripple);
+          setTimeout(() => ripple.remove(), 500);
+        });
       });
-    });
+    }
 
     // ===== LIVE WALLPAPER — PC COMPONENT SHAPES =====
     (function () {
@@ -1117,8 +1156,8 @@
       const GREEN = '#39ff14';
       const COLORS = [CYAN, GREEN];
 
-      const N = 500;   // total dots
-      const N_SHAPE = 250;   // how many converge into the shape; the rest float on the opposite side
+      const N = window.innerWidth < 768 ? 180 : 500;   // total dots — fewer on mobile for performance
+      const N_SHAPE = window.innerWidth < 768 ? 80 : 250;   // how many converge into the shape; the rest float on the opposite side
       let mouse = { x: W / 2, y: H / 2 };
       let stillStart = null, stillTimer = 0;
       let forming = false, formed = false, exploding = false;
@@ -1341,10 +1380,11 @@
         if (moved > 2) triggerExplode();
       });
       window.addEventListener('touchmove', e => {
-        e.preventDefault();
-        mouse.x = e.touches[0].clientX; mouse.y = e.touches[0].clientY;
-        triggerExplode();
-      }, { passive: false });
+        // Do NOT call e.preventDefault() — that blocks native scroll on mobile
+        if (e.touches.length > 0) {
+          mouse.x = e.touches[0].clientX; mouse.y = e.touches[0].clientY;
+        }
+      }, { passive: true });
 
       // ── render loop ──────────────────────────────────────────────
       function loop(ts) {
